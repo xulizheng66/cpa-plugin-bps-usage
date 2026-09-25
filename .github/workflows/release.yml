@@ -76,5 +76,6 @@ jobs:
           git add store/registry.json
           if git diff --cached --quiet; then echo "registry unchanged"; else
             git commit -m "store: registry for ${GITHUB_REF_NAME}"
-            git push
+            # tag 触发时是 detached HEAD，必须显式指定目标分支
+            git push origin HEAD:refs/heads/main
           fi
