@@ -23,7 +23,7 @@ PLUGIN = {
 
 def artifacts():
     out = []
-    for f in sorted(DIST.glob("*.so")):
+    for f in sorted(DIST.glob("*.zip")):   # 商店安装需要 zip（内部 <id>-v<version>.so）
         name = f.name
         arch = "arm64" if "arm64" in name else ("amd64" if "amd64" in name else None)
         if not arch:
@@ -39,7 +39,7 @@ def artifacts():
 def main():
     arts = artifacts()
     if not arts:
-        raise SystemExit("dist/ 下没有 .so 产物")
+        raise SystemExit("dist/ 下没有 .zip 产物")
     entry = dict(PLUGIN)
     entry["version"] = VERSION
     entry["install"] = {"type": "direct", "artifacts": arts}

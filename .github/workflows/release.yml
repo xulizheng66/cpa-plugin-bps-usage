@@ -50,10 +50,18 @@ jobs:
           CC: gcc
         run: go build -buildvcs=false -buildmode=c-shared -o "dist/bps-usage-v${VERSION}-linux-amd64.so" .
 
-      - name: Checksums
+      - name: Package zip archives
         run: |
+          set -euo pipefail
           rm -f dist/*.h
-          (cd dist && sha256sum ./*.so > SHA256SUMS && file ./*.so)
+          for arch in arm64 amd64; do
+            rm -rf "pkg-${arch}" && mkdir -p "pkg-${arch}"
+            # 商店要求 zip 根目录下是 <id>-v<version>.so
+            cp "dist/bps-usage-v${VERSION}-linux-${arch}.so" "pkg-${arch}/bps-usage-v${VERSION}.so"
+            (cd "pkg-${arch}" && zip -q "../dist/bps-usage-v${VERSION}-linux-${arch}.zip" "bps-usage-v${VERSION}.so")
+            rm -rf "pkg-${arch}"
+          done
+          (cd dist && sha256sum ./*.zip ./*.so > SHA256SUMS && ls -la)
 
       - name: Upload release assets
         if: startsWith(github.ref, 'refs/tags/')
