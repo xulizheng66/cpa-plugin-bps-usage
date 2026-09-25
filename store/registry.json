@@ -21,16 +21,16 @@
           {
             "goos": "linux",
             "goarch": "amd64",
-            "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-amd64.so",
-            "size": 7742608,
-            "sha256": "6a1b8fad14bd18a1407d9c84be2aa7398792d50dde40b4c19e6efe0d6c5dbb56"
+            "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-amd64.zip",
+            "size": 4127813,
+            "sha256": "a67e498e79c9cdcfc0cc79a97531b901c0c054c005b44e4d88d994de5ae2914f"
           },
           {
             "goos": "linux",
             "goarch": "arm64",
-            "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-arm64.so",
-            "size": 7156120,
-            "sha256": "efce65b9bf55fdcb256ea221114b50cd8624dcb4cf61d767be978ffbc8a56981"
+            "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-arm64.zip",
+            "size": 3739126,
+            "sha256": "2c7cb6b8b93986d0bab1251b2521340e99439271274c6f4a5ee07d0072cba034"
           }
         ]
       },
@@ -43,16 +43,16 @@
               {
                 "goos": "linux",
                 "goarch": "amd64",
-                "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-amd64.so",
-                "size": 7742608,
-                "sha256": "6a1b8fad14bd18a1407d9c84be2aa7398792d50dde40b4c19e6efe0d6c5dbb56"
+                "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-amd64.zip",
+                "size": 4127813,
+                "sha256": "a67e498e79c9cdcfc0cc79a97531b901c0c054c005b44e4d88d994de5ae2914f"
               },
               {
                 "goos": "linux",
                 "goarch": "arm64",
-                "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-arm64.so",
-                "size": 7156120,
-                "sha256": "efce65b9bf55fdcb256ea221114b50cd8624dcb4cf61d767be978ffbc8a56981"
+                "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-arm64.zip",
+                "size": 3739126,
+                "sha256": "2c7cb6b8b93986d0bab1251b2521340e99439271274c6f4a5ee07d0072cba034"
               }
             ]
           }
