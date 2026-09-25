@@ -1,4 +1,63 @@
 {
   "schema_version": 2,
-  "plugins": []
+  "plugins": [
+    {
+      "id": "bps-usage",
+      "name": "BPS 用量",
+      "description": "在 CPAMC 中查看 bps-shim 采集的用量：BPS 直连与转发 CPA 两条路径的请求数、tokens（含缓存/推理）、TTFT、耗时与工具调用。",
+      "author": "xulizheng66",
+      "repository": "https://github.com/xulizheng66/cpa-plugin-bps-usage",
+      "homepage": "https://github.com/xulizheng66/cpa-plugin-bps-usage",
+      "license": "MIT",
+      "tags": [
+        "监控",
+        "bps",
+        "usage"
+      ],
+      "version": "0.1.0",
+      "install": {
+        "type": "direct",
+        "artifacts": [
+          {
+            "goos": "linux",
+            "goarch": "amd64",
+            "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-amd64.so",
+            "size": 7742608,
+            "sha256": "6a1b8fad14bd18a1407d9c84be2aa7398792d50dde40b4c19e6efe0d6c5dbb56"
+          },
+          {
+            "goos": "linux",
+            "goarch": "arm64",
+            "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-arm64.so",
+            "size": 7156120,
+            "sha256": "efce65b9bf55fdcb256ea221114b50cd8624dcb4cf61d767be978ffbc8a56981"
+          }
+        ]
+      },
+      "versions": [
+        {
+          "version": "0.1.0",
+          "install": {
+            "type": "direct",
+            "artifacts": [
+              {
+                "goos": "linux",
+                "goarch": "amd64",
+                "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-amd64.so",
+                "size": 7742608,
+                "sha256": "6a1b8fad14bd18a1407d9c84be2aa7398792d50dde40b4c19e6efe0d6c5dbb56"
+              },
+              {
+                "goos": "linux",
+                "goarch": "arm64",
+                "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-arm64.so",
+                "size": 7156120,
+                "sha256": "efce65b9bf55fdcb256ea221114b50cd8624dcb4cf61d767be978ffbc8a56981"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
 }
