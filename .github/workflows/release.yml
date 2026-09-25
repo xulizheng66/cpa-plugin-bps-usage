@@ -30,9 +30,9 @@ jobs:
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           mkdir -p dist
           CGO_ENABLED=1 GOOS=linux GOARCH=arm64 CC=aarch64-linux-gnu-gcc \
-            go build -buildmode=c-shared -o "dist/bps-usage-v${VERSION}-linux-arm64.so" .
+            go build -buildvcs=false -buildmode=c-shared -o "dist/bps-usage-v${VERSION}-linux-arm64.so" .
           CGO_ENABLED=1 GOOS=linux GOARCH=amd64 \
-            go build -buildmode=c-shared -o "dist/bps-usage-v${VERSION}-linux-amd64.so" .
+            go build -buildvcs=false -buildmode=c-shared -o "dist/bps-usage-v${VERSION}-linux-amd64.so" .
           rm -f dist/*.h
           (cd dist && sha256sum ./*.so > SHA256SUMS)
           file dist/*.so
