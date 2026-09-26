@@ -4,54 +4,91 @@
 <meta charset="utf-8">
 <title>BPS 用量</title>
 <style>
-  :root { color-scheme: dark; }
+  /* 所有选择器都限定在 #bpsu 下并带 bpsu- 前缀，避免被宿主（CPAMC/CPAMP）CSS 覆盖 */
   #bpsu { margin:0; padding:18px 20px 40px; background:#0f1115; color:#e6e8eb;
-         font:13px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif; }
-  #bpsu h1 { font-size:17px; margin:0 0 4px; }
-  .bpsu-sub { color:#8b93a1; margin-bottom:14px; }
-  .bpsu-cards { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
-  .bpsu-card { background:#151922; border:1px solid #232733; border-radius:9px; padding:9px 16px; min-width:92px; }
-  .bpsu-card b { display:block; font-size:19px; line-height:1.3; }
-  .bpsu-card span { color:#8b93a1; }
-  .bpsu-card.bps b { color:#58a6ff; } .bpsu-card.fwd b { color:#d29922; } .bpsu-card.bad b { color:#f85149; }
+          font:13px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;
+          min-height:100vh; box-sizing:border-box; }
+  #bpsu * { box-sizing:border-box; }
+  #bpsu h1 { font-size:17px; margin:0 0 4px; color:#e6e8eb; }
   #bpsu h3 { font-size:14px; margin:22px 0 8px; color:#c9d1d9; }
-  table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; }
-  th, td { border-bottom:1px solid #232733; padding:6px 9px; text-align:right; white-space:nowrap; }
-  th:first-child, td:first-child, th:nth-child(2), td:nth-child(2), th:nth-child(3), td:nth-child(3) { text-align:left; }
-  th { color:#8b93a1; font-weight:500; background:#151922; position:sticky; top:0; }
-  tr:hover td { background:#151922; }
-  .bpsu-ok { color:#3fb950; } .bpsu-bad { color:#f85149; } .bpsu-bps { color:#58a6ff; } .bpsu-fwd { color:#d29922; }
-  button { background:#1f2634; color:#e6e8eb; border:1px solid #2d3444; border-radius:7px; padding:5px 12px; cursor:pointer; }
-  button:hover { background:#26303f; }
-  .bpsu-bar { display:flex; align-items:center; gap:12px; margin-bottom:6px; }
-  .bpsu-err { background:#2a1618; border:1px solid #6b2b30; color:#ffb4b4; padding:10px 14px; border-radius:8px; margin-bottom:14px; white-space:pre-wrap; }
-  .bpsu-muted { color:#6b7280; }
-  code { background:#1b2130; padding:1px 5px; border-radius:4px; }
+  #bpsu .bpsu-sub { color:#8b93a1; margin-bottom:14px; }
+  #bpsu .bpsu-cards { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
+  #bpsu .bpsu-card { background:#151922; border:1px solid #232733; border-radius:9px; padding:9px 16px; min-width:92px; }
+  #bpsu .bpsu-card b { display:block; font-size:19px; line-height:1.3; color:#e6e8eb; }
+  #bpsu .bpsu-card span { color:#8b93a1; }
+  #bpsu .bpsu-card.bpsu-bps b { color:#58a6ff; }
+  #bpsu .bpsu-card.bpsu-fwd b { color:#d29922; }
+  #bpsu .bpsu-card.bpsu-bad b { color:#f85149; }
+  #bpsu table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; background:transparent; }
+  #bpsu th, #bpsu td { border-bottom:1px solid #232733; padding:6px 9px; text-align:right; white-space:nowrap; color:#e6e8eb; }
+  #bpsu th:first-child, #bpsu td:first-child, #bpsu th:nth-child(2), #bpsu td:nth-child(2),
+  #bpsu th:nth-child(3), #bpsu td:nth-child(3) { text-align:left; }
+  #bpsu th { color:#8b93a1; font-weight:500; background:#151922; position:sticky; top:0; }
+  #bpsu tr:hover td { background:#151922; }
+  #bpsu .bpsu-ok { color:#3fb950; }
+  #bpsu .bpsu-bad { color:#f85149; }
+  #bpsu .bpsu-bps { color:#58a6ff; }
+  #bpsu .bpsu-fwd { color:#d29922; }
+  #bpsu button { background:#1f2634; color:#e6e8eb; border:1px solid #2d3444; border-radius:7px;
+                 padding:5px 12px; cursor:pointer; font:inherit; }
+  #bpsu button:hover:not(:disabled) { background:#26303f; }
+  #bpsu button:disabled { opacity:.55; cursor:default; }
+  #bpsu .bpsu-bar { display:flex; align-items:center; gap:12px; margin-bottom:6px; flex-wrap:wrap; }
+  #bpsu .bpsu-err { background:#2a1618; border:1px solid #6b2b30; color:#ffb4b4; padding:10px 14px;
+                    border-radius:8px; margin-bottom:14px; white-space:pre-wrap; }
+  #bpsu .bpsu-muted { color:#6b7280; }
+  #bpsu .bpsu-flash { color:#3fb950; opacity:0; transition:opacity .2s; }
+  #bpsu .bpsu-flash.bpsu-show { opacity:1; }
+  #bpsu .bpsu-pager { display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  #bpsu .bpsu-pager select { background:#1f2634; color:#e6e8eb; border:1px solid #2d3444;
+                             border-radius:6px; padding:4px 6px; font:inherit; }
+  #bpsu .bpsu-pager .bpsu-info { color:#8b93a1; }
+  @keyframes bpsu-pulse { 0%{background:#233046} 100%{background:transparent} }
+  #bpsu tbody.bpsu-updated tr { animation:bpsu-pulse .9s ease-out both; }
 </style>
 </head>
 <body style="margin:0;background:#0f1115">
 <div id="bpsu">
-<h1 id="bpsu-title">BPS 用量</h1>
-<div class="bpsu-sub" id="bpsu-sub">数据来自 bps-shim 的独立用量库（不经过 CPA/CPAMP）</div>
-<div class="bpsu-bar">
-  <button id="bpsu-refresh">立即刷新</button>
-  <span class="bpsu-muted" id="bpsu-stamp">—</span>
+  <h1 id="bpsu-title">BPS 用量</h1>
+  <div class="bpsu-sub" id="bpsu-sub">数据来自 bps-shim 的独立用量库（不经过 CPA/CPAMP）</div>
+  <div class="bpsu-bar">
+    <button id="bpsu-refresh">立即刷新</button>
+    <span class="bpsu-ok bpsu-flash" id="bpsu-flash">已刷新</span>
+    <span class="bpsu-muted" id="bpsu-stamp">—</span>
+    <span class="bpsu-muted" id="bpsu-countdown"></span>
+  </div>
+  <div id="bpsu-error" class="bpsu-err" style="display:none"></div>
+  <div class="bpsu-cards">
+    <div class="bpsu-card"><b id="bpsu-c-total">—</b><span id="bpsu-c-total-label">近 7 天请求</span></div>
+    <div class="bpsu-card bpsu-bps"><b id="bpsu-c-bps">—</b><span>走 BPS</span></div>
+    <div class="bpsu-card bpsu-fwd"><b id="bpsu-c-fwd">—</b><span>转发 CPA</span></div>
+    <div class="bpsu-card bpsu-bad"><b id="bpsu-c-fail">—</b><span>失败</span></div>
+  </div>
+  <h3>按天 / 走向 / 模型</h3>
+  <table id="bpsu-summary"><thead><tr>
+    <th>日期</th><th>走向</th><th>模型</th><th>次数</th><th>输入</th><th>输出</th><th>缓存读</th><th>推理</th><th>平均耗时</th><th>失败</th>
+  </tr></thead><tbody></tbody></table>
+  <h3>最近请求</h3>
+  <table id="bpsu-requests"><thead><tr>
+    <th>时间 (UTC+8)</th><th>模型</th><th>走向</th><th>档位</th><th>输入</th><th>输出</th><th>缓存</th>
+    <th>首字</th><th>耗时</th><th>轮次</th><th>工具 (BPS/客户端)</th><th>状态</th>
+  </tr></thead><tbody></tbody></table>
+  <div class="bpsu-pager">
+    <button id="bpsu-first">« 首页</button>
+    <button id="bpsu-prev">‹ 上一页</button>
+    <span class="bpsu-info" id="bpsu-pageinfo">—</span>
+    <button id="bpsu-next">下一页 ›</button>
+    <button id="bpsu-last">末页 »</button>
+    <span class="bpsu-info">每页</span>
+    <select id="bpsu-pagesize">
+      <option value="20">20</option>
+      <option value="50" selected>50</option>
+      <option value="100">100</option>
+      <option value="200">200</option>
+    </select>
+    <span class="bpsu-info" id="bpsu-totalinfo"></span>
+  </div>
 </div>
-<div id="bpsu-error" class="bpsu-err" style="display:none"></div>
-<div class="bpsu-cards">
-  <div class="bpsu-card"><b id="bpsu-c-total">—</b><span id="bpsu-c-total-label">近 7 天请求</span></div>
-  <div class="bpsu-card bpsu-bps"><b id="bpsu-c-bps">—</b><span>走 BPS</span></div>
-  <div class="bpsu-card bpsu-fwd"><b id="bpsu-c-fwd">—</b><span>转发 CPA</span></div>
-  <div class="bpsu-card bpsu-bad"><b id="bpsu-c-fail">—</b><span>失败</span></div>
-</div>
-<h3>按天 / 走向 / 模型</h3>
-<table id="bpsu-summary"><thead><tr>
-  <th>日期</th><th>走向</th><th>模型</th><th>次数</th><th>输入</th><th>输出</th><th>缓存读</th><th>推理</th><th>平均耗时</th><th>失败</th>
-</tr></thead><tbody></tbody></table>
-<h3>最近请求</h3>
-<table id="bpsu-requests"><thead><tr>
-  <th>时间 (UTC+8)</th><th>模型</th><th>走向</th><th>档位</th><th>输入</th><th>输出</th><th>缓存</th><th>首字</th><th>耗时</th><th>轮次</th><th>工具 (BPS/客户端)</th><th>状态</th>
-</tr></thead><tbody></tbody></table>
 <script>
 const CFG = __BPS_USAGE_CONFIG__;
 const $ = (id) => document.getElementById(id);
@@ -63,14 +100,23 @@ const ts = (ms) => {
   const p = (n) => String(n).padStart(2, "0");
   return `${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())} ${p(d.getUTCHours())}:${p(d.getUTCMinutes())}:${p(d.getUTCSeconds())}`;
 };
-const routeClass = (r) => r === "bps" ? "bps" : "fwd";
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const routeClass = (r) => r === "bps" ? "bpsu-bps" : "bpsu-fwd";
+
+const state = { page: 1, pageSize: 50, total: 0, loading: false, timer: 0, countdown: 0 };
+let flashTimer = 0;
 
 document.title = CFG.title + " · BPS";
 $("bpsu-title").textContent = CFG.title;
 $("bpsu-c-total-label").textContent = `近 ${CFG.days} 天请求`;
 
-function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
-
+function flash(text) {
+  const el = $("bpsu-flash");
+  el.textContent = text;
+  el.classList.add("bpsu-show");
+  clearTimeout(flashTimer);
+  flashTimer = setTimeout(() => el.classList.remove("bpsu-show"), 1600);
+}
 function showError(msg) {
   const box = $("bpsu-error");
   box.style.display = "block";
@@ -78,23 +124,53 @@ function showError(msg) {
 }
 function clearError() { $("bpsu-error").style.display = "none"; }
 
-async function load() {
+function pageCount() { return Math.max(1, Math.ceil(state.total / state.pageSize)); }
+
+function renderPager() {
+  const pages = pageCount();
+  $("bpsu-pageinfo").textContent = `第 ${state.page} / ${pages} 页`;
+  $("bpsu-totalinfo").textContent = `共 ${num(state.total)} 条`;
+  $("bpsu-first").disabled = $("bpsu-prev").disabled = state.page <= 1;
+  $("bpsu-next").disabled = $("bpsu-last").disabled = state.page >= pages;
+}
+
+async function load(reason) {
+  if (state.loading) return;
+  state.loading = true;
+  const btn = $("bpsu-refresh");
+  const oldText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = reason === "auto" ? "自动刷新中…" : "刷新中…";
   const base = (CFG.shimUrl || "/bps").replace(/\/+$/, "");
-  const url = `${base}/usage.json?key=${encodeURIComponent(CFG.shimKey || "")}&days=${CFG.days}&limit=${CFG.limit}`;
+  const offset = (state.page - 1) * state.pageSize;
+  const url = `${base}/usage.json?key=${encodeURIComponent(CFG.shimKey || "")}`
+            + `&days=${CFG.days}&limit=${state.pageSize}&offset=${offset}`;
   try {
-    const res = await fetch(url, { headers: { "accept": "application/json" } });
+    const res = await fetch(url, { headers: { accept: "application/json" }, cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
     const data = await res.json();
-    clearError();
     render(data);
-    $("bpsu-stamp").textContent = "更新于 " + new Date().toLocaleTimeString("zh-CN", { hour12: false });
+    clearError();
+    const now = new Date().toLocaleTimeString("zh-CN", { hour12: false });
+    $("bpsu-stamp").textContent = `更新于 ${now}`;
+    flash(reason === "auto" ? "已自动刷新" : "已刷新");
   } catch (err) {
     showError(`读取 ${url} 失败：${err.message}\n\n排查：① 配置里的 shim_url 是否与 CPA 同源（推荐 /bps）② shim_key 是否为 BPS_SHIM_KEY ③ 浏览器控制台是否 CORS 报错 ④ 服务器上 curl -H "Authorization: Bearer <key>" ${base}/usage.json 是否 200`);
+  } finally {
+    state.loading = false;
+    btn.disabled = false;
+    btn.textContent = oldText;
+    resetCountdown();
+    renderPager();
   }
 }
 
 function render(data) {
   const summary = data.summary || [], rows = data.requests || [];
+  if (typeof data.total === "number") state.total = data.total;      // 服务端分页总数
+  const pages = pageCount();
+  if (state.page > pages) { state.page = pages; return load("page"); } // 数据变少时回退页码
+
   const total = summary.reduce((a, r) => a + (r.n || 0), 0);
   const bps = summary.filter((r) => r.route === "bps").reduce((a, r) => a + (r.n || 0), 0);
   const fwd = summary.filter((r) => r.route !== "bps").reduce((a, r) => a + (r.n || 0), 0);
@@ -108,22 +184,53 @@ function render(data) {
     <td>${esc(r.day)}</td><td class="${routeClass(r.route)}">${esc(r.route)}</td><td>${esc(r.model)}</td>
     <td>${num(r.n)}</td><td>${num(r.input_tokens)}</td><td>${num(r.output_tokens)}</td>
     <td>${num(r.cached)}</td><td>${num(r.reasoning)}</td>
-    <td>${secs(r.avg_ms)}</td><td class="${r.failures ? "bad" : ""}">${num(r.failures)}</td></tr>`).join("")
+    <td>${secs(r.avg_ms)}</td><td class="${r.failures ? "bpsu-bad" : ""}">${num(r.failures)}</td></tr>`).join("")
     || `<tr><td colspan="10" class="bpsu-muted">暂无数据</td></tr>`;
 
-  $("bpsu-requests").tBodies[0].innerHTML = rows.map((r) => `<tr>
+  const body = $("bpsu-requests").tBodies[0];
+  body.innerHTML = rows.map((r) => `<tr>
     <td>${ts(r.ts_ms)}</td><td>${esc(r.model)}</td><td class="${routeClass(r.route)}">${esc(r.route)}</td>
     <td>${esc(r.effort || "")}</td><td>${num(r.input_tokens)}</td><td>${num(r.output_tokens)}</td>
     <td>${num(r.cached_tokens)}</td><td>${secs(r.ttft_ms)}</td><td>${secs(r.latency_ms)}</td>
     <td>${esc(r.iterations || "")}</td><td>${num(r.bps_tool_calls)}/${num(r.client_tool_calls)} ${esc(r.client_tool_names || "")}</td>
-    <td class="${r.status === "ok" ? "ok" : "bad"}" title="${esc(r.error || "")}">${esc(r.status)}</td></tr>`).join("")
+    <td class="${r.status === "ok" ? "bpsu-ok" : "bpsu-bad"}" title="${esc(r.error || "")}">${esc(r.status)}</td></tr>`).join("")
     || `<tr><td colspan="12" class="bpsu-muted">暂无数据</td></tr>`;
+  body.classList.remove("bpsu-updated");
+  void body.offsetWidth;              // 触发重排以重播动画
+  body.classList.add("bpsu-updated");
 }
 
-$("bpsu-refresh").addEventListener("click", load);
-load();
-setInterval(load, Math.max(5, CFG.refreshSeconds || 30) * 1000);
+function resetCountdown() {
+  clearInterval(state.timer);
+  state.countdown = Math.max(5, CFG.refreshSeconds || 30);
+  const tick = () => {
+    state.countdown -= 1;
+    $("bpsu-countdown").textContent = `自动刷新 ${state.countdown}s`;
+    if (state.countdown <= 0) load("auto");
+  };
+  $("bpsu-countdown").textContent = `自动刷新 ${state.countdown}s`;
+  state.timer = setInterval(tick, 1000);
+}
+
+function goto(page) {
+  const pages = pageCount();
+  const next = Math.min(Math.max(1, page), pages);
+  if (next === state.page) return;
+  state.page = next;
+  load("page");
+}
+
+$("bpsu-refresh").addEventListener("click", () => load("manual"));
+$("bpsu-first").addEventListener("click", () => goto(1));
+$("bpsu-prev").addEventListener("click", () => goto(state.page - 1));
+$("bpsu-next").addEventListener("click", () => goto(state.page + 1));
+$("bpsu-last").addEventListener("click", () => goto(pageCount()));
+$("bpsu-pagesize").addEventListener("change", (e) => {
+  state.pageSize = Number(e.target.value) || 50;
+  state.page = 1;
+  load("page");
+});
+load("init");
 </script>
-</div>
 </body>
 </html>
