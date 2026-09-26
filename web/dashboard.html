@@ -9,6 +9,23 @@
           font:13px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;
           min-height:100vh; box-sizing:border-box; }
   #bpsu * { box-sizing:border-box; }
+  /* 宿主（CPAMP）可能有针对 div/table 的背景与文字色规则，
+     这里对自己所有容器/文字强制本页配色，避免被宿主覆盖出灰底/糊字 */
+  #bpsu, #bpsu .bpsu-cards, #bpsu .bpsu-bar, #bpsu .bpsu-pager, #bpsu .bpsu-card,
+  #bpsu table, #bpsu thead, #bpsu tbody, #bpsu tr, #bpsu th, #bpsu td {
+    background-color:#0f1115 !important;
+  }
+  #bpsu .bpsu-card { background-color:#151922 !important; }
+  #bpsu th { background-color:#151922 !important; }
+  #bpsu, #bpsu h1, #bpsu h3, #bpsu b, #bpsu td, #bpsu .bpsu-card b { color:#e6e8eb !important; }
+  #bpsu .bpsu-sub, #bpsu .bpsu-muted, #bpsu .bpsu-card span, #bpsu .bpsu-pager .bpsu-info,
+  #bpsu th, #bpsu .bpsu-pager select { color:#8b93a1 !important; }
+  #bpsu .bpsu-bps, #bpsu .bpsu-card.bpsu-bps b { color:#58a6ff !important; }
+  #bpsu .bpsu-fwd, #bpsu .bpsu-card.bpsu-fwd b { color:#d29922 !important; }
+  #bpsu .bpsu-ok, #bpsu .bpsu-flash { color:#3fb950 !important; }
+  #bpsu .bpsu-bad, #bpsu .bpsu-card.bpsu-bad b { color:#f85149 !important; }
+  #bpsu button { background-color:#1f2634 !important; color:#e6e8eb !important; border:1px solid #2d3444 !important; }
+  #bpsu .bpsu-pager select { background-color:#1f2634 !important; border:1px solid #2d3444 !important; }
   #bpsu h1 { font-size:17px; margin:0 0 4px; color:#e6e8eb; }
   #bpsu h3 { font-size:14px; margin:22px 0 8px; color:#c9d1d9; }
   #bpsu .bpsu-sub { color:#8b93a1; margin-bottom:14px; }
