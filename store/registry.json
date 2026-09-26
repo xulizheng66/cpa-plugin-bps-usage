@@ -14,27 +14,49 @@
         "bps",
         "usage"
       ],
-      "version": "0.1.0",
+      "version": "0.1.1",
       "install": {
         "type": "direct",
         "artifacts": [
           {
             "goos": "linux",
             "goarch": "amd64",
-            "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-amd64.zip",
-            "size": 4127813,
-            "sha256": "a67e498e79c9cdcfc0cc79a97531b901c0c054c005b44e4d88d994de5ae2914f"
+            "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.1/bps-usage-v0.1.1-linux-amd64.zip",
+            "size": 4128741,
+            "sha256": "6977e9553cc8ab53070215c4479eca40c01512511e6177b8783dbf951c66f4c8"
           },
           {
             "goos": "linux",
             "goarch": "arm64",
-            "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.0/bps-usage-v0.1.0-linux-arm64.zip",
-            "size": 3739126,
-            "sha256": "2c7cb6b8b93986d0bab1251b2521340e99439271274c6f4a5ee07d0072cba034"
+            "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.1/bps-usage-v0.1.1-linux-arm64.zip",
+            "size": 3740244,
+            "sha256": "7b23c666e4f46bf86143d9a658f0713629d16d8e30735b2a2b3425f468bbdd4f"
           }
         ]
       },
       "versions": [
+        {
+          "version": "0.1.1",
+          "install": {
+            "type": "direct",
+            "artifacts": [
+              {
+                "goos": "linux",
+                "goarch": "amd64",
+                "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.1/bps-usage-v0.1.1-linux-amd64.zip",
+                "size": 4128741,
+                "sha256": "6977e9553cc8ab53070215c4479eca40c01512511e6177b8783dbf951c66f4c8"
+              },
+              {
+                "goos": "linux",
+                "goarch": "arm64",
+                "url": "https://github.com/xulizheng66/cpa-plugin-bps-usage/releases/download/v0.1.1/bps-usage-v0.1.1-linux-arm64.zip",
+                "size": 3740244,
+                "sha256": "7b23c666e4f46bf86143d9a658f0713629d16d8e30735b2a2b3425f468bbdd4f"
+              }
+            ]
+          }
+        },
         {
           "version": "0.1.0",
           "install": {
