@@ -16,7 +16,7 @@ import (
 const (
 	pluginName        = "bps-usage"
 	pluginDisplayName = "BPS 用量"
-	pluginVersion     = "0.1.0"
+	pluginVersion     = "0.1.1"
 	pluginAuthor      = "xulizheng66"
 	pluginRepository  = "https://github.com/xulizheng66/cpa-plugin-bps-usage"
 	resourcePath      = "/dashboard"
